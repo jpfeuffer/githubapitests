@@ -1,38 +1,47 @@
 pipeline {
-  agent none
+  agent any
   stages {
     stage('echo') {
       steps {
         parallel(
           "echo_win": {
             node(label: 'win8') {
+              def winnode = env.NODE_NAME
               sh '''#!bash
 echo "win" > win.txt'''
             }
-            
-            
           },
           "echo_lnx": {
-            node(label: 'ubuntu_1404')
-            
+            node(label: 'ubuntu_1404') {
+              def lnxnode = env.NODE_NAME
+              sh '''#!bash
+echo "ubuntu" > ubuntu.txt'''
+            }
           },
           "echo_style": {
-            node(label: 'ubuntu_1404')
-            
+            node(label: 'ubuntu_1404') {
+              def lnxnode2 = env.NODE_NAME
+              sh '''#!bash
+echo "style" > style.txt'''
+            }
           }
         )
       }
     }
-    stage('') {
+    stage('deploy') {
       steps {
         parallel(
           "deploy_win": {
-            node(label: 'win8')
-            
+            node(label: winnode) {
+              sh '''#!bash
+              cat win.txt'''
+            }
           },
           "deploy_lnx": {
-            node(label: 'ubuntu_1404')
-            
+            node(label: lnxnode) {
+              sh '''#!bash
+              cat ubuntu.txt'''
+            }
           }
         )
       }
