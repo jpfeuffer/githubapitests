@@ -14,15 +14,13 @@ echo "win" > win.txt'''
           "echo_lnx": {
             node(label: 'ubuntu_1404') {
               script { def lnxnode = env.NODE_NAME }
-              sh '''#!/usr/bin/bash
-echo "ubuntu" > ubuntu.txt'''
+              sh '''echo "ubuntu" > ubuntu.txt'''
             }
           },
           "echo_style": {
             node(label: 'ubuntu_1404') {
               script { def lnxnode2 = env.NODE_NAME }
-              sh '''#!/usr/bin/bash
-echo "style" > style.txt'''
+              sh '''echo "style" > style.txt'''
             }
           }
         )
